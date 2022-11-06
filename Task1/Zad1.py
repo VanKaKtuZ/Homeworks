@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     # Сохранение файла XML
     tree = ET.ElementTree(root)
-    tree.write('results/results.xml', encoding='utf-8')
+    tree.write('results/results.xml', encoding='utf-8', xml_declaration=True)
 
 # Построение графика    
 if __name__ == '__main__':
