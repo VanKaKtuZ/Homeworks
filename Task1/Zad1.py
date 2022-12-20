@@ -1,5 +1,6 @@
 # Импортирование библиотек
 import numpy as np
+from numpy import sin, sqrt, abs, exp, pi
 import matplotlib.pyplot as plt
 import xml.etree.ElementTree as ET
 import os
@@ -13,43 +14,30 @@ f(x)=-0.0001(|sin(x)*sin(A)*exp(|100-(sqrt(x**2+A**2)/pi)|)|+1)**0.1
 
 A = 1.34941
 
-# Функции для упрощения записи
-def sqrt(a):
-    if a >= 0:
-        return np.sqrt(a)
-
-def abs(a):
-    return np.abs(a)
-
-def sin(a):
-    return np.sin(a)   
-
-def e(a):
-    return np.exp(a)
-
+# Функция
 def func(x):
-    return -0.0001 * (abs(sin(x) * sin(A) * e(abs(100 - sqrt(x**2 + A**2) / np.pi))) + 1)**0.1
+    return -0.0001 * (abs(sin(x) * sin(A) * exp(abs(100 - sqrt(x**2 + A**2) /
+                                                             pi))) + 1)**0.1
 
-# Пустые списки
-xs = []
-ys = []
-
-for x in range(-10, 10, 1):
-
-    # f(x)
-    y = func(x)
-
-    # Добавление элемментов в списки
-    xs.append(x)
-    ys.append(y)
-
-    # Для проверки
-    #print(x)
-    #print(y)
-
-
-# Создание XML файла
 if __name__ == '__main__':
+    # Пустые списки
+    xs = []
+    ys = []
+
+    for x in np.arange(-10, 10, 0.001):
+        # f(x)
+        y = func(x)
+
+        # Добавление элемментов в списки
+        xs.append(x)
+        ys.append(y)
+
+        # Для проверки
+        #print(x)
+        #print(y)
+
+
+    # Создание XML файла
 
     # Создание главного элемента
     root = ET.Element('data')
@@ -62,7 +50,7 @@ if __name__ == '__main__':
   
     # Создание директории если её нет 
     d = os.path.dirname(__file__) # директория скрипта
-    p = r'{}/results'.format(d) # создание path
+    p = r'{}/results'.format(d) # создание path (пути)
 
     try:
         os.makedirs(p)
@@ -71,25 +59,12 @@ if __name__ == '__main__':
 
     # Сохранение файла XML
     tree = ET.ElementTree(root)
-    tree.write('results/results.xml', encoding='utf-8', xml_declaration=True)
+    tree.write('results/results.xml', encoding='utf-8', xml_declaration = True)
 
-# Построение графика    
-if __name__ == '__main__':
-    # Интервал изменения переменной по оси X
-    xmin = -10.0
-    xmax = 10.0
-
-    # Количество отсчетов на заданном интервале
-    count = 200
-
-    # !!! Создадим список координат по оси X на отрезке [-xmin; xmax], включая концы
-    xlist = np.linspace(xmin, xmax, count)
-
-    # Вычислим значение функции в заданных точках
-    ylist = [func(x) for x in xlist]
+    # Построение графика    
 
     # !!! Нарисуем одномерный график
-    plt.plot(xlist, ylist)
+    plt.plot(xs, ys)
 
     # Название осей
     plt.xlabel('x')
